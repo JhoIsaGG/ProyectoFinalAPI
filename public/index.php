@@ -55,6 +55,24 @@ $departamentoService = new DepartamentoService($departamentoRepository);
 $departamentoValidator = new DepartamentoValidator();
 $departamentoController = new DepartamentoController($departamentoService, $departamentoValidator);
 
+// Repositorios, Servicios, Validadores y Controladores para Categorias de Ticket
+$categoriaTicketRepository = new CategoriaTicketRepository($databaseConnection);
+$categoriaTicketService = new CategoriaTicketService($categoriaTicketRepository);
+$categoriaTicketValidator = new CategoriaTicketValidator();
+$categoriaTicketController = new CategoriaTicketController($categoriaTicketService, $categoriaTicketValidator);
+
+// Repositorios, Servicios, Validadores y Controladores para Tickets
+$ticketRepository = new TicketRepository($databaseConnection);
+$ticketService = new TicketService($ticketRepository);
+$ticketValidator = new TicketValidator();
+$ticketController = new TicketController($ticketService, $ticketValidator);
+
+// Repositorios, Servicios, Validadores y Controladores para Comentarios de Ticket
+$comentarioTicketRepository = new ComentarioTicketRepository($databaseConnection);
+$comentarioTicketService = new ComentarioTicketService($comentarioTicketRepository);
+$comentarioTicketValidator = new ComentarioTicketValidator();
+$comentarioTicketController = new ComentarioTicketController($comentarioTicketService, $comentarioTicketValidator);
+
 
 $corsMiddleware = new CorsMiddleware();
 $jsonMiddleware = new JsonMiddleware();
