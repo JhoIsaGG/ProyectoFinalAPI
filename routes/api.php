@@ -29,4 +29,11 @@ $router->get('/proyectofinalapi/public/api/departamentos/{id}', [$departamentoCo
 $router->post('/proyectofinalapi/public/api/departamentos', [$departamentoController, 'store'], $protectedMiddlewares);
 $router->put('/proyectofinalapi/public/api/departamentos/{id}', [$departamentoController, 'update'], $protectedMiddlewares);
 $router->delete('/proyectofinalapi/public/api/departamentos/{id}', [$departamentoController, 'destroy'], $protectedMiddlewares);
+
+// Rutas para Tickets
+$router->get('/proyectofinalapi/public/api/tickets', [$ticketController, 'index'], $protectedMiddlewares);
+$router->get('/proyectofinalapi/public/api/tickets/{id}', [$ticketController, 'show'], $protectedMiddlewares);
+$router->post('/proyectofinalapi/public/api/tickets', [$ticketController, 'store'], $protectedMiddlewares);
+$router->put('/proyectofinalapi/public/api/tickets/{id}', [$ticketController, 'update'], $protectedMiddlewares);
+$router->delete('/proyectofinalapi/public/api/tickets/{id}', [$ticketController, 'destroy'], $protectedMiddlewares);
 ?>
