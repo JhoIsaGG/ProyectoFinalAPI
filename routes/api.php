@@ -35,5 +35,7 @@ $router->get('/proyectofinalapi/public/api/tickets', [$ticketController, 'index'
 $router->get('/proyectofinalapi/public/api/tickets/{id}', [$ticketController, 'show'], $protectedMiddlewares);
 $router->post('/proyectofinalapi/public/api/tickets', [$ticketController, 'store'], $protectedMiddlewares);
 $router->put('/proyectofinalapi/public/api/tickets/{id}', [$ticketController, 'update'], $protectedMiddlewares);
-$router->delete('/proyectofinalapi/public/api/tickets/{id}', [$ticketController, 'destroy'], $protectedMiddlewares);
-?>
+$router->delete('/proyectofinalapi/public/api/tickets/{id}', [$ticketController, 'destroy'], $protectedMiddlewares);\
+
+//Prueba
+?> 
