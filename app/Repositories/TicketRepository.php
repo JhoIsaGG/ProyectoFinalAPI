@@ -132,21 +132,94 @@ class TicketRepository
 
     private function baseSelect(): string
     {
-        // Consulta base reutilizable para listar y obtener detalle con datos relacionados.
         return 'SELECT
-                    t.*,
-                    et.nombre AS estado_ticket_nombre,
-                    pt.nombre AS prioridad_ticket_nombre,
-                    ct.nombre AS categoria_ticket_nombre,
-                    creador.nombre AS creado_por_nombre,
-                    creador.apellido AS creado_por_apellido,
-                    actualizador.nombre AS actualizado_por_nombre,
-                    actualizador.apellido AS actualizado_por_apellido
+                    t.id,
+                    t.titulo,
+                    t.descripcion,
+                    t.estado_ticket_id,
+                    t.prioridad_ticket_id,
+                    t.categoria_ticket_id,
+                    t.estado,
+                    t.created_at,
+                    t.updated_at,
+                    t.created_by,
+                    t.updated_by,
+                    CONCAT(u_agente.nombre, \' \', u_agente.apellido) AS nombre_apellido_agente_asignado
                 FROM tickets t
-                INNER JOIN estados_ticket et ON et.id = t.estado_ticket_id
-                INNER JOIN prioridades_ticket pt ON pt.id = t.prioridad_ticket_id
-                INNER JOIN categorias_ticket ct ON ct.id = t.categoria_ticket_id
-                INNER JOIN usuarios creador ON creador.id = t.created_by
-                LEFT JOIN usuarios actualizador ON actualizador.id = t.updated_by';
+                LEFT JOIN asignaciones_ticket ast ON ast.ticket_id = t.id
+                LEFT JOIN agentes ag ON ag.id = ast.agente_id
+                LEFT JOIN usuarios u_agente ON u_agente.id = ag.usuario_id';
+    }
+
+    public function beginTransaction(): void
+    {
+        $this->connection->beginTransaction();
+    }
+
+    public function commit(): void
+    {
+        $this->connection->commit();
+    }
+
+    public function rollBack(): void
+    {
+        if ($this->connection->inTransaction()) {
+            $this->connection->rollBack();
+        }
+    }
+
+    public function getAgentsWithActiveTicketsCount(): array
+    {
+        $sql = 'SELECT 
+                    a.id AS agente_id,
+                    a.usuario_id,
+                    COALESCE(tc.active_count, 0) AS active_tickets_count
+                FROM agentes a
+                INNER JOIN usuarios u ON u.id = a.usuario_id
+                LEFT JOIN (
+                    SELECT 
+                        at.agente_id,
+                        COUNT(t.id) AS active_count
+                    FROM asignaciones_ticket at
+                    INNER JOIN tickets t ON t.id = at.ticket_id
+                    INNER JOIN estados_ticket et ON et.id = t.estado_ticket_id
+                    WHERE t.estado = 1 AND et.nombre != \'Resuelto\'
+                    GROUP BY at.agente_id
+                ) tc ON tc.agente_id = a.id
+                WHERE u.estado = 1
+                ORDER BY active_tickets_count ASC';
+        return $this->connection->query($sql)->fetchAll();
+    }
+
+    public function getAgentCategoriesMap(): array
+    {
+        $sql = 'SELECT agente_id, categoria_ticket_id FROM agente_categorias';
+        $rows = $this->connection->query($sql)->fetchAll();
+        $map = [];
+        foreach ($rows as $row) {
+            $map[(int)$row['agente_id']][] = (int)$row['categoria_ticket_id'];
+        }
+        return $map;
+    }
+
+    public function getPriorityOrder(int $priorityId): int
+    {
+        $stmt = $this->connection->prepare('SELECT orden FROM prioridades_ticket WHERE id = :id');
+        $stmt->execute(['id' => $priorityId]);
+        $row = $stmt->fetch();
+        return $row ? (int)$row['orden'] : 0;
+    }
+
+    public function createAssignment(int $ticketId, int $agenteId, int $createdBy): void
+    {
+        $stmt = $this->connection->prepare(
+            'INSERT INTO asignaciones_ticket (ticket_id, agente_id, created_by)
+             VALUES (:ticket_id, :agente_id, :created_by)'
+        );
+        $stmt->execute([
+            'ticket_id' => $ticketId,
+            'agente_id' => $agenteId,
+            'created_by' => $createdBy
+        ]);
     }
 }

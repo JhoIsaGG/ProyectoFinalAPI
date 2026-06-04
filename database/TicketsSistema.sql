@@ -30,7 +30,8 @@ INSERT INTO roles (nombre, descripcion, estado, created_by, updated_by) VALUES
 
 INSERT INTO departamentos (nombre, descripcion, estado, created_by, updated_by) VALUES
 ('Dirección General', 'Departamento de dirección general', 1, 1, 1),
-('RRHH', 'Recursos Humanos', 1, 1, 1);
+('RRHH', 'Recursos Humanos', 1, 1, 1),
+('TI', 'Tecnología de la Información', 1, 1, 1);
 
 
 CREATE TABLE usuarios (
@@ -53,7 +54,7 @@ CREATE TABLE usuarios (
 );
 
 INSERT INTO usuarios (nombre, apellido, email, telefono, password, rol_id, departamento_id, estado, created_by, updated_by) VALUES
-('Admin', 'Admin', 'admin@empresa.com', '502-12345678', '1234', 1, 1, 1, 1, 1);
+('Admin', 'Admin', 'admin@empresa.com', '502-12345678', '$2y$10$LTIUt379DGn2TTesHu4HF.nQq89HG79FSFy/uPHkBhmq0zNpQ2rYK', 1, 1, 1, 1, 1);
 
 -- 3. AGREGAR LLAVES FORÁNEAS DE AUDITORÍA A LAS PRIMERAS TABLAS
 -- (Ahora que 'usuarios' ya existe, podemos vincularlas de forma segura)
@@ -80,6 +81,12 @@ CREATE TABLE categorias_ticket (
     CONSTRAINT fk_cat_updated_by FOREIGN KEY (updated_by) REFERENCES usuarios(id)
 );
 
+INSERT INTO categorias_ticket (nombre, estado, created_by, updated_by) VALUES
+('Hardware', 1, 1, 1),
+('Software', 1, 1, 1),
+('Red', 1, 1, 1),
+('Acceso', 1, 1, 1);
+
 CREATE TABLE estados_ticket (
     id INT AUTO_INCREMENT PRIMARY KEY, 
     nombre VARCHAR(50) NOT NULL, 
@@ -91,6 +98,11 @@ CREATE TABLE estados_ticket (
     CONSTRAINT fk_est_created_by FOREIGN KEY (created_by) REFERENCES usuarios(id), 
     CONSTRAINT fk_est_updated_by FOREIGN KEY (updated_by) REFERENCES usuarios(id)
 );
+
+INSERT INTO estados_ticket (nombre, estado, created_by, updated_by) VALUES
+('Abierto', 1, 1, 1),
+('En Proceso', 1, 1, 1),
+('Resuelto', 1, 1, 1);
 
 CREATE TABLE prioridades_ticket (
     id INT AUTO_INCREMENT PRIMARY KEY, 
@@ -104,6 +116,11 @@ CREATE TABLE prioridades_ticket (
     CONSTRAINT fk_prio_created_by FOREIGN KEY (created_by) REFERENCES usuarios(id), 
     CONSTRAINT fk_prio_updated_by FOREIGN KEY (updated_by) REFERENCES usuarios(id)
 );
+
+INSERT INTO prioridades_ticket (orden, nombre, estado, created_by, updated_by) VALUES
+(1, 'Baja', 1, 1, 1),
+(2, 'Media', 1, 1, 1),
+(3, 'Alta', 1, 1, 1);
 
 
 -- 5. ENTIDADES DE AGENTES

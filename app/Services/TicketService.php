@@ -24,15 +24,73 @@ class TicketService
 
     public function create(array $data): array
     {
+        $this->ticketRepository->beginTransaction();
         try {
-            $newTicketId = $this->ticketRepository->create($this->normalizeCreateData($data));
+            $normalized = $this->normalizeCreateData($data);
+            $newTicketId = $this->ticketRepository->create($normalized);
+
+            $this->autoAssignTicket(
+                $newTicketId, 
+                $normalized['categoria_ticket_id'], 
+                $normalized['prioridad_ticket_id'], 
+                $normalized['created_by']
+            );
+
+            $this->ticketRepository->commit();
             return $this->ticketRepository->findById($newTicketId) ?: [];
         } catch (PDOException $exception) {
+            $this->ticketRepository->rollBack();
             if ((int) $exception->getCode() === 23000) {
                 throw new RuntimeException('Algun estado, prioridad, categoria o usuario no existe');
             }
 
             throw $exception;
+        } catch (Exception $exception) {
+            $this->ticketRepository->rollBack();
+            throw $exception;
+        }
+    }
+
+    public function autoAssignTicket(int $ticketId, int $categoryId, int $priorityId, int $createdBy): void
+    {
+        $priorityOrder = $this->ticketRepository->getPriorityOrder($priorityId);
+        $agents = $this->ticketRepository->getAgentsWithActiveTicketsCount();
+        $categoriesMap = $this->ticketRepository->getAgentCategoriesMap();
+
+        if (empty($agents)) {
+            return;
+        }
+
+        $compatibleAgents = [];
+        foreach ($agents as $agent) {
+            $agentId = (int)$agent['agente_id'];
+            $agentCategories = $categoriesMap[$agentId] ?? [];
+            if (in_array($categoryId, $agentCategories, true)) {
+                $compatibleAgents[] = $agent;
+            }
+        }
+
+        $assignedAgentId = null;
+
+        if (!empty($compatibleAgents)) {
+            $minCompatibleAgent = $compatibleAgents[0];
+            $minCompatibleCount = (int)$minCompatibleAgent['active_tickets_count'];
+
+            if ($priorityOrder === 3) {
+                $assignedAgentId = (int)$minCompatibleAgent['agente_id'];
+            } else {
+                if ($minCompatibleCount < 2) {
+                    $assignedAgentId = (int)$minCompatibleAgent['agente_id'];
+                } else {
+                    $assignedAgentId = (int)$agents[0]['agente_id'];
+                }
+            }
+        } else {
+            $assignedAgentId = (int)$agents[0]['agente_id'];
+        }
+
+        if ($assignedAgentId !== null) {
+            $this->ticketRepository->createAssignment($ticketId, $assignedAgentId, $createdBy);
         }
     }
 
