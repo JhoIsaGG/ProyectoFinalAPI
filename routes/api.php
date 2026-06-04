@@ -34,4 +34,12 @@ $router->delete('/proyectofinalapi/public/api/departamentos/{id}', [$departament
 $router->post('/proyectofinalapi/public/api/auth/login', [$authController, 'login']);
 $router->post('/proyectofinalapi/public/api/auth/restablecer-contrasena', [$authController, 'resetPassword']);
 
+// Estados de ticket
+$router->get('/proyectofinalapi/public/api/estados-ticket', [$estadoTicketController, 'index'], $protectedMiddlewares);
+$router->get('/proyectofinalapi/public/api/estados-ticket/{id}', [$estadoTicketController, 'show'], $protectedMiddlewares);
+$router->post('/proyectofinalapi/public/api/estados-ticket', [$estadoTicketController, 'store'], $protectedMiddlewares);
+$router->put('/proyectofinalapi/public/api/estados-ticket/{id}', [$estadoTicketController, 'update'], $protectedMiddlewares);
+$router->delete('/proyectofinalapi/public/api/estados-ticket/{id}', [$estadoTicketController, 'destroy'], $protectedMiddlewares);
+
+
 ?>

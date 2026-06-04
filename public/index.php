@@ -60,6 +60,11 @@ $authService = new AuthService($usuarioRepository);
 $authValidator = new AuthValidator();
 $authController = new AuthController($authService, $authValidator);
 
+// Estados de ticket
+$estadoTicketRepository = new EstadoTicketRepository($databaseConnection);
+$estadoTicketService = new EstadoTicketService($estadoTicketRepository);
+$estadoTicketValidator = new EstadoTicketValidator();
+$estadoTicketController = new EstadoTicketController($estadoTicketService, $estadoTicketValidator);
 
 
 $corsMiddleware = new CorsMiddleware();
