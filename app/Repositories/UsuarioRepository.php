@@ -22,6 +22,28 @@ class UsuarioRepository
         return $statement->fetch();
     }
 
+    public function findByEmail(string $email): array|false
+    {
+        $statement = $this->connection->prepare('SELECT * FROM usuarios WHERE email = :email');
+        $statement->execute(['email' => $email]);
+
+        return $statement->fetch();
+    }
+
+    public function updatePassword(int $id, string $password, int $updatedBy): bool
+    {
+        $statement = $this->connection->prepare(
+            'UPDATE usuarios SET password = :password, updated_by = :updated_by WHERE id = :id'
+        );
+
+        return $statement->execute([
+            'id' => $id,
+            'password' => $password,
+            'updated_by' => $updatedBy,
+        ]);
+    }
+
+    
     public function create(array $data): int
     {
         $statement = $this->connection->prepare(
@@ -72,7 +94,6 @@ class UsuarioRepository
             'departamento_id' => $data['departamento_id'],
             'estado' => $data['estado'],
             'updated_by' => $data['updated_by'],
-            'fecha_contratacion' => $data['fecha_contratacion'],
         ]);
     }
 
