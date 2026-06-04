@@ -41,5 +41,13 @@ $router->post('/proyectofinalapi/public/api/estados-ticket', [$estadoTicketContr
 $router->put('/proyectofinalapi/public/api/estados-ticket/{id}', [$estadoTicketController, 'update'], $protectedMiddlewares);
 $router->delete('/proyectofinalapi/public/api/estados-ticket/{id}', [$estadoTicketController, 'destroy'], $protectedMiddlewares);
 
+// Prioridades de ticket
+$router->get('/proyectofinalapi/public/api/prioridades-ticket', [$prioridadTicketController, 'index'], $protectedMiddlewares);
+$router->get('/proyectofinalapi/public/api/prioridades-ticket/{id}', [$prioridadTicketController, 'show'], $protectedMiddlewares);
+$router->post('/proyectofinalapi/public/api/prioridades-ticket', [$prioridadTicketController, 'store'], $protectedMiddlewares);
+$router->put('/proyectofinalapi/public/api/prioridades-ticket/{id}', [$prioridadTicketController, 'update'], $protectedMiddlewares);
+$router->delete('/proyectofinalapi/public/api/prioridades-ticket/{id}', [$prioridadTicketController, 'destroy'], $protectedMiddlewares);
+
+
 
 ?>

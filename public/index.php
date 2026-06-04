@@ -66,6 +66,13 @@ $estadoTicketService = new EstadoTicketService($estadoTicketRepository);
 $estadoTicketValidator = new EstadoTicketValidator();
 $estadoTicketController = new EstadoTicketController($estadoTicketService, $estadoTicketValidator);
 
+// Prioridades de ticket
+$prioridadTicketRepository = new PrioridadTicketRepository($databaseConnection);
+$prioridadTicketService = new PrioridadTicketService($prioridadTicketRepository);
+$prioridadTicketValidator = new PrioridadTicketValidator();
+$prioridadTicketController = new PrioridadTicketController($prioridadTicketService, $prioridadTicketValidator);
+
+
 
 $corsMiddleware = new CorsMiddleware();
 $jsonMiddleware = new JsonMiddleware();
