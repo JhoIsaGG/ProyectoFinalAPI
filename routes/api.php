@@ -29,4 +29,33 @@ $router->get('/proyectofinalapi/public/api/departamentos/{id}', [$departamentoCo
 $router->post('/proyectofinalapi/public/api/departamentos', [$departamentoController, 'store'], $protectedMiddlewares);
 $router->put('/proyectofinalapi/public/api/departamentos/{id}', [$departamentoController, 'update'], $protectedMiddlewares);
 $router->delete('/proyectofinalapi/public/api/departamentos/{id}', [$departamentoController, 'destroy'], $protectedMiddlewares);
+
+// Rutas para Categorias de Ticket
+foreach (['/api', '/proyectofinalapi/public/api'] as $apiPrefix) {
+    $router->get($apiPrefix . '/categorias-ticket', [$categoriaTicketController, 'index'], $protectedMiddlewares);
+    $router->get($apiPrefix . '/categorias-ticket/{id}', [$categoriaTicketController, 'show'], $protectedMiddlewares);
+    $router->post($apiPrefix . '/categorias-ticket', [$categoriaTicketController, 'store'], $protectedMiddlewares);
+    $router->put($apiPrefix . '/categorias-ticket/{id}', [$categoriaTicketController, 'update'], $protectedMiddlewares);
+    $router->delete($apiPrefix . '/categorias-ticket/{id}', [$categoriaTicketController, 'destroy'], $protectedMiddlewares);
+}
+
+// Rutas para Tickets
+foreach (['/api', '/proyectofinalapi/public/api'] as $apiPrefix) {
+    $router->get($apiPrefix . '/tickets', [$ticketController, 'index'], $protectedMiddlewares);
+    $router->get($apiPrefix . '/tickets/{id}', [$ticketController, 'show'], $protectedMiddlewares);
+    $router->post($apiPrefix . '/tickets', [$ticketController, 'store'], $protectedMiddlewares);
+    $router->put($apiPrefix . '/tickets/{id}', [$ticketController, 'update'], $protectedMiddlewares);
+    $router->delete($apiPrefix . '/tickets/{id}', [$ticketController, 'destroy'], $protectedMiddlewares);
+}
+
+// Rutas para Comentarios de Ticket
+foreach (['/api', '/proyectofinalapi/public/api'] as $apiPrefix) {
+    $router->get($apiPrefix . '/comentarios-ticket', [$comentarioTicketController, 'index'], $protectedMiddlewares);
+    $router->get($apiPrefix . '/comentarios-ticket/{id}', [$comentarioTicketController, 'show'], $protectedMiddlewares);
+    $router->post($apiPrefix . '/comentarios-ticket', [$comentarioTicketController, 'store'], $protectedMiddlewares);
+    $router->put($apiPrefix . '/comentarios-ticket/{id}', [$comentarioTicketController, 'update'], $protectedMiddlewares);
+    $router->delete($apiPrefix . '/comentarios-ticket/{id}', [$comentarioTicketController, 'destroy'], $protectedMiddlewares);
+    $router->get($apiPrefix . '/tickets/{ticket_id}/comentarios', [$comentarioTicketController, 'index'], $protectedMiddlewares);
+    $router->post($apiPrefix . '/tickets/{ticket_id}/comentarios', [$comentarioTicketController, 'store'], $protectedMiddlewares);
+}
 ?>
