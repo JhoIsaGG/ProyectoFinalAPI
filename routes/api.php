@@ -29,4 +29,9 @@ $router->get('/proyectofinalapi/public/api/departamentos/{id}', [$departamentoCo
 $router->post('/proyectofinalapi/public/api/departamentos', [$departamentoController, 'store'], $protectedMiddlewares);
 $router->put('/proyectofinalapi/public/api/departamentos/{id}', [$departamentoController, 'update'], $protectedMiddlewares);
 $router->delete('/proyectofinalapi/public/api/departamentos/{id}', [$departamentoController, 'destroy'], $protectedMiddlewares);
+
+// Auth (publico)
+$router->post('/proyectofinalapi/public/api/auth/login', [$authController, 'login']);
+$router->post('/proyectofinalapi/public/api/auth/restablecer-contrasena', [$authController, 'resetPassword']);
+
 ?>

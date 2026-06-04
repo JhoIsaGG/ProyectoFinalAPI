@@ -55,6 +55,12 @@ $departamentoService = new DepartamentoService($departamentoRepository);
 $departamentoValidator = new DepartamentoValidator();
 $departamentoController = new DepartamentoController($departamentoService, $departamentoValidator);
 
+// Auth (reutiliza UsuarioRepository)
+$authService = new AuthService($usuarioRepository);
+$authValidator = new AuthValidator();
+$authController = new AuthController($authService, $authValidator);
+
+
 
 $corsMiddleware = new CorsMiddleware();
 $jsonMiddleware = new JsonMiddleware();
