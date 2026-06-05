@@ -54,7 +54,7 @@ CREATE TABLE usuarios (
 );
 
 INSERT INTO usuarios (nombre, apellido, email, telefono, password, rol_id, departamento_id, estado, created_by, updated_by) VALUES
-('Admin', 'Admin', 'admin@empresa.com', '502-12345678', '$2y$10$LTIUt379DGn2TTesHu4HF.nQq89HG79FSFy/uPHkBhmq0zNpQ2rYK', 1, 1, 1, 1, 1);
+('Admin', 'Admin', 'admin@empresa.com', '502-12345678', '$2y$10$cjHC1Xdz9gVD5aiMnZ5ryuwQxkgGemUnPFyYyMcTTnJ.uCT1I9XTW', 1, 1, 1, 1, 1);
 
 -- 3. AGREGAR LLAVES FORÁNEAS DE AUDITORÍA A LAS PRIMERAS TABLAS
 -- (Ahora que 'usuarios' ya existe, podemos vincularlas de forma segura)

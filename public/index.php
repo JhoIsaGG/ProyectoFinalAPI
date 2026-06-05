@@ -31,12 +31,6 @@ $request = new Request();
 $router = new Router();
 
 $databaseConnection = Database::getConnection();
-// Repositorios, Servicios, Validadores y Controladores para Empleados
-$empleadoRepository = new EmpleadoRepository($databaseConnection);
-$empleadoService = new EmpleadoService($empleadoRepository);
-$empleadoValidator = new EmpleadoValidator();
-$empleadoController = new EmpleadoController($empleadoService, $empleadoValidator);
-
 // Repositorios, Servicios, Validadores y Controladores para Usuarios
 $usuarioRepository = new UsuarioRepository($databaseConnection);
 $usuarioService = new UsuarioService($usuarioRepository);
