@@ -31,12 +31,6 @@ $request = new Request();
 $router = new Router();
 
 $databaseConnection = Database::getConnection();
-// Repositorios, Servicios, Validadores y Controladores para Empleados
-$empleadoRepository = new EmpleadoRepository($databaseConnection);
-$empleadoService = new EmpleadoService($empleadoRepository);
-$empleadoValidator = new EmpleadoValidator();
-$empleadoController = new EmpleadoController($empleadoService, $empleadoValidator);
-
 // Repositorios, Servicios, Validadores y Controladores para Usuarios
 $usuarioRepository = new UsuarioRepository($databaseConnection);
 $usuarioService = new UsuarioService($usuarioRepository);
@@ -55,6 +49,22 @@ $departamentoService = new DepartamentoService($departamentoRepository);
 $departamentoValidator = new DepartamentoValidator();
 $departamentoController = new DepartamentoController($departamentoService, $departamentoValidator);
 
+// Auth (reutiliza UsuarioRepository)
+$authService = new AuthService($usuarioRepository);
+$authValidator = new AuthValidator();
+$authController = new AuthController($authService, $authValidator);
+
+// Estados de ticket
+$estadoTicketRepository = new EstadoTicketRepository($databaseConnection);
+$estadoTicketService = new EstadoTicketService($estadoTicketRepository);
+$estadoTicketValidator = new EstadoTicketValidator();
+$estadoTicketController = new EstadoTicketController($estadoTicketService, $estadoTicketValidator);
+
+// Prioridades de ticket
+$prioridadTicketRepository = new PrioridadTicketRepository($databaseConnection);
+$prioridadTicketService = new PrioridadTicketService($prioridadTicketRepository);
+$prioridadTicketValidator = new PrioridadTicketValidator();
+$prioridadTicketController = new PrioridadTicketController($prioridadTicketService, $prioridadTicketValidator);
 // Repositorios, Servicios, Validadores y Controladores para Categorias de Ticket
 $categoriaTicketRepository = new CategoriaTicketRepository($databaseConnection);
 $categoriaTicketService = new CategoriaTicketService($categoriaTicketRepository);
@@ -62,8 +72,12 @@ $categoriaTicketValidator = new CategoriaTicketValidator();
 $categoriaTicketController = new CategoriaTicketController($categoriaTicketService, $categoriaTicketValidator);
 
 // Repositorios, Servicios, Validadores y Controladores para Tickets
+$historialTicketRepository = new HistorialTicketRepository($databaseConnection);
+$historialTicketService = new HistorialTicketService($historialTicketRepository);
+$historialTicketController = new HistorialTicketController($historialTicketService);
+
 $ticketRepository = new TicketRepository($databaseConnection);
-$ticketService = new TicketService($ticketRepository);
+$ticketService = new TicketService($ticketRepository, $historialTicketRepository);
 $ticketValidator = new TicketValidator();
 $ticketController = new TicketController($ticketService, $ticketValidator);
 
@@ -72,6 +86,12 @@ $comentarioTicketRepository = new ComentarioTicketRepository($databaseConnection
 $comentarioTicketService = new ComentarioTicketService($comentarioTicketRepository);
 $comentarioTicketValidator = new ComentarioTicketValidator();
 $comentarioTicketController = new ComentarioTicketController($comentarioTicketService, $comentarioTicketValidator);
+
+// Repositorios, Servicios, Validadores y Controladores para Asignaciones de Ticket
+$asignacionTicketRepository = new AsignacionTicketRepository($databaseConnection);
+$asignacionTicketService = new AsignacionTicketService($asignacionTicketRepository);
+$asignacionTicketValidator = new AsignacionTicketValidator();
+$asignacionTicketController = new AsignacionTicketController($asignacionTicketService, $asignacionTicketValidator);
 
 
 $corsMiddleware = new CorsMiddleware();

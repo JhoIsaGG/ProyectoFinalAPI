@@ -8,8 +8,10 @@ declare(strict_types=1);
 */
 class TicketService
 {
-    public function __construct(private TicketRepository $ticketRepository)
-    {
+    public function __construct(
+        private TicketRepository $ticketRepository,
+        private HistorialTicketRepository $historialTicketRepository
+    ) {
     }
 
     public function list(array $filters = []): array
@@ -35,6 +37,14 @@ class TicketService
                 $normalized['prioridad_ticket_id'], 
                 $normalized['created_by']
             );
+
+            // Registrar estado inicial en el historial
+            $this->historialTicketRepository->create([
+                'ticket_id' => $newTicketId,
+                'estado_ticket_id' => $normalized['estado_ticket_id'],
+                'created_by' => $normalized['created_by'],
+                'updated_by' => $normalized['updated_by'] ?? null,
+            ]);
 
             $this->ticketRepository->commit();
             return $this->ticketRepository->findById($newTicketId) ?: [];
@@ -103,7 +113,19 @@ class TicketService
         }
 
         try {
-            $this->ticketRepository->update($id, $this->normalizeUpdateData($existingTicket, $data));
+            $normalizedUpdate = $this->normalizeUpdateData($existingTicket, $data);
+            $this->ticketRepository->update($id, $normalizedUpdate);
+
+            // Registrar en historial si el estado cambió
+            if ((int) $existingTicket['estado_ticket_id'] !== (int) $normalizedUpdate['estado_ticket_id']) {
+                $this->historialTicketRepository->create([
+                    'ticket_id' => $id,
+                    'estado_ticket_id' => $normalizedUpdate['estado_ticket_id'],
+                    'created_by' => $normalizedUpdate['updated_by'] ?? (int) $existingTicket['created_by'],
+                    'updated_by' => $normalizedUpdate['updated_by'] ?? null,
+                ]);
+            }
+
             return $this->ticketRepository->findById($id);
         } catch (PDOException $exception) {
             if ((int) $exception->getCode() === 23000) {

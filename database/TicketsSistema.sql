@@ -54,7 +54,7 @@ CREATE TABLE usuarios (
 );
 
 INSERT INTO usuarios (nombre, apellido, email, telefono, password, rol_id, departamento_id, estado, created_by, updated_by) VALUES
-('Admin', 'Admin', 'admin@empresa.com', '502-12345678', '$2y$10$LTIUt379DGn2TTesHu4HF.nQq89HG79FSFy/uPHkBhmq0zNpQ2rYK', 1, 1, 1, 1, 1);
+('Admin', 'Admin', 'admin@empresa.com', '502-12345678', '$2y$10$cjHC1Xdz9gVD5aiMnZ5ryuwQxkgGemUnPFyYyMcTTnJ.uCT1I9XTW', 1, 1, 1, 1, 1);
 
 -- 3. AGREGAR LLAVES FORÁNEAS DE AUDITORÍA A LAS PRIMERAS TABLAS
 -- (Ahora que 'usuarios' ya existe, podemos vincularlas de forma segura)
@@ -185,6 +185,23 @@ CREATE TABLE comentarios_ticket (
     CONSTRAINT fk_com_updated_by FOREIGN KEY (updated_by) REFERENCES usuarios(id)
 ); 
 
+
+CREATE TABLE historial_tickets (
+    id INT AUTO_INCREMENT PRIMARY KEY, -- Corregido AUTO_INCREMENT y NOT NULL implícito
+    ticket_id INT NOT NULL,
+    estado_ticket_id INT NOT NULL, 
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, 
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    created_by INT NOT NULL, 
+    updated_by INT NULL,
+    
+    CONSTRAINT fk_hist_ticket FOREIGN KEY (ticket_id) REFERENCES tickets(id),
+    CONSTRAINT fk_hist_estado_ticket FOREIGN KEY (estado_ticket_id) REFERENCES estados_ticket(id),
+    CONSTRAINT fk_hist_created_by FOREIGN KEY (created_by) REFERENCES usuarios(id), 
+    CONSTRAINT fk_hist_updated_by FOREIGN KEY (updated_by) REFERENCES usuarios(id)
+); 
+
+
 CREATE TABLE asignaciones_ticket (
     id INT AUTO_INCREMENT PRIMARY KEY, -- Corregido AUTO_INCREMENT
     ticket_id INT NOT NULL, 
@@ -199,5 +216,3 @@ CREATE TABLE asignaciones_ticket (
     CONSTRAINT fk_asig_ticket FOREIGN KEY (ticket_id) REFERENCES tickets(id),
     CONSTRAINT fk_asig_agente FOREIGN KEY (agente_id) REFERENCES agentes(id)
 );
-
-
