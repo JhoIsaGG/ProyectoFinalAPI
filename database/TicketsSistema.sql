@@ -185,6 +185,23 @@ CREATE TABLE comentarios_ticket (
     CONSTRAINT fk_com_updated_by FOREIGN KEY (updated_by) REFERENCES usuarios(id)
 ); 
 
+
+CREATE TABLE historial_tickets (
+    id INT AUTO_INCREMENT PRIMARY KEY, -- Corregido AUTO_INCREMENT y NOT NULL implícito
+    ticket_id INT NOT NULL,
+    estado_ticket_id INT NOT NULL, 
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, 
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    created_by INT NOT NULL, 
+    updated_by INT NULL,
+    
+    CONSTRAINT fk_hist_ticket FOREIGN KEY (ticket_id) REFERENCES tickets(id),
+    CONSTRAINT fk_hist_estado_ticket FOREIGN KEY (estado_ticket_id) REFERENCES estados_ticket(id),
+    CONSTRAINT fk_hist_created_by FOREIGN KEY (created_by) REFERENCES usuarios(id), 
+    CONSTRAINT fk_hist_updated_by FOREIGN KEY (updated_by) REFERENCES usuarios(id)
+); 
+
+
 CREATE TABLE asignaciones_ticket (
     id INT AUTO_INCREMENT PRIMARY KEY, -- Corregido AUTO_INCREMENT
     ticket_id INT NOT NULL, 
