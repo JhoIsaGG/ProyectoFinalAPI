@@ -216,5 +216,3 @@ CREATE TABLE asignaciones_ticket (
     CONSTRAINT fk_asig_ticket FOREIGN KEY (ticket_id) REFERENCES tickets(id),
     CONSTRAINT fk_asig_agente FOREIGN KEY (agente_id) REFERENCES agentes(id)
 );
-
-
