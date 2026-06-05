@@ -7,9 +7,8 @@ return [
     'port' => $_ENV['DB_PORT'] ?? 3306,
     'database' => $_ENV['DB_DATABASE'] ?? 'proyectofinalapi',
     'username' => $_ENV['DB_USERNAME'] ?? ($_ENV['DB_USER'] ?? 'root'),
-    'password' => $_ENV['DB_PASSWORD'] ?? '',
+    'password' => $_ENV['DB_PASSWORD'] ?? '123',
     'charset' => 'utf8mb4',
 ]
-
 
 ?>

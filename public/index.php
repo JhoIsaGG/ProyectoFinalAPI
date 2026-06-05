@@ -55,6 +55,22 @@ $departamentoService = new DepartamentoService($departamentoRepository);
 $departamentoValidator = new DepartamentoValidator();
 $departamentoController = new DepartamentoController($departamentoService, $departamentoValidator);
 
+// Auth (reutiliza UsuarioRepository)
+$authService = new AuthService($usuarioRepository);
+$authValidator = new AuthValidator();
+$authController = new AuthController($authService, $authValidator);
+
+// Estados de ticket
+$estadoTicketRepository = new EstadoTicketRepository($databaseConnection);
+$estadoTicketService = new EstadoTicketService($estadoTicketRepository);
+$estadoTicketValidator = new EstadoTicketValidator();
+$estadoTicketController = new EstadoTicketController($estadoTicketService, $estadoTicketValidator);
+
+// Prioridades de ticket
+$prioridadTicketRepository = new PrioridadTicketRepository($databaseConnection);
+$prioridadTicketService = new PrioridadTicketService($prioridadTicketRepository);
+$prioridadTicketValidator = new PrioridadTicketValidator();
+$prioridadTicketController = new PrioridadTicketController($prioridadTicketService, $prioridadTicketValidator);
 // Repositorios, Servicios, Validadores y Controladores para Categorias de Ticket
 $categoriaTicketRepository = new CategoriaTicketRepository($databaseConnection);
 $categoriaTicketService = new CategoriaTicketService($categoriaTicketRepository);

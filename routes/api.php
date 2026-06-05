@@ -30,6 +30,24 @@ $router->post('/proyectofinalapi/public/api/departamentos', [$departamentoContro
 $router->put('/proyectofinalapi/public/api/departamentos/{id}', [$departamentoController, 'update'], $protectedMiddlewares);
 $router->delete('/proyectofinalapi/public/api/departamentos/{id}', [$departamentoController, 'destroy'], $protectedMiddlewares);
 
+// Auth (publico)
+$router->post('/proyectofinalapi/public/api/auth/login', [$authController, 'login']);
+$router->post('/proyectofinalapi/public/api/auth/restablecer-contrasena', [$authController, 'resetPassword']);
+
+// Estados de ticket
+$router->get('/proyectofinalapi/public/api/estados-ticket', [$estadoTicketController, 'index'], $protectedMiddlewares);
+$router->get('/proyectofinalapi/public/api/estados-ticket/{id}', [$estadoTicketController, 'show'], $protectedMiddlewares);
+$router->post('/proyectofinalapi/public/api/estados-ticket', [$estadoTicketController, 'store'], $protectedMiddlewares);
+$router->put('/proyectofinalapi/public/api/estados-ticket/{id}', [$estadoTicketController, 'update'], $protectedMiddlewares);
+$router->delete('/proyectofinalapi/public/api/estados-ticket/{id}', [$estadoTicketController, 'destroy'], $protectedMiddlewares);
+
+// Prioridades de ticket
+$router->get('/proyectofinalapi/public/api/prioridades-ticket', [$prioridadTicketController, 'index'], $protectedMiddlewares);
+$router->get('/proyectofinalapi/public/api/prioridades-ticket/{id}', [$prioridadTicketController, 'show'], $protectedMiddlewares);
+$router->post('/proyectofinalapi/public/api/prioridades-ticket', [$prioridadTicketController, 'store'], $protectedMiddlewares);
+$router->put('/proyectofinalapi/public/api/prioridades-ticket/{id}', [$prioridadTicketController, 'update'], $protectedMiddlewares);
+$router->delete('/proyectofinalapi/public/api/prioridades-ticket/{id}', [$prioridadTicketController, 'destroy'], $protectedMiddlewares);
+
 // Rutas para Categorias de Ticket
     $router->get('/proyectofinalapi/public/api/categorias_ticket', [$categoriaTicketController, 'index'], $protectedMiddlewares);
     $router->get('/proyectofinalapi/public/api/categorias_ticket/{id}', [$categoriaTicketController, 'show'], $protectedMiddlewares);
