@@ -65,4 +65,15 @@ $router->delete('/proyectofinalapi/public/api/prioridades-ticket/{id}', [$priori
     $router->get('/proyectofinalapi/public/api/tickets/{ticket_id}/comentarios', [$comentarioTicketController, 'index'], $protectedMiddlewares);
     $router->post('/proyectofinalapi/public/api/tickets/{ticket_id}/comentarios', [$comentarioTicketController, 'store'], $protectedMiddlewares);
 
+// Rutas para Historial de Tickets
+    $router->get('/proyectofinalapi/public/api/tickets/{ticket_id}/historial', [$historialTicketController, 'showByTicket'], $protectedMiddlewares);
+    $router->get('/proyectofinalapi/public/api/historial-tickets', [$historialTicketController, 'index'], $protectedMiddlewares);
+
+// Rutas para Asignaciones de Tickets
+    $router->get('/proyectofinalapi/public/api/asignaciones', [$asignacionTicketController, 'index'], $protectedMiddlewares);
+    $router->get('/proyectofinalapi/public/api/asignaciones/{id}', [$asignacionTicketController, 'show'], $protectedMiddlewares);
+    $router->post('/proyectofinalapi/public/api/asignaciones', [$asignacionTicketController, 'store'], $protectedMiddlewares);
+    $router->put('/proyectofinalapi/public/api/asignaciones/{id}', [$asignacionTicketController, 'update'], $protectedMiddlewares);
+    $router->delete('/proyectofinalapi/public/api/asignaciones/{id}', [$asignacionTicketController, 'destroy'], $protectedMiddlewares);
+
 ?>
