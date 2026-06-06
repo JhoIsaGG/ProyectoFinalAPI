@@ -48,6 +48,7 @@ $router->delete('/proyectofinalapi/public/api/prioridades-ticket/{id}', [$priori
     $router->delete('/proyectofinalapi/public/api/categorias_ticket/{id}', [$categoriaTicketController, 'destroy'], $protectedMiddlewares);
 
 // Rutas para Tickets
+    $router->get('/proyectofinalapi/public/api/tickets_user/{user_id}', [$ticketController, 'showByUser'], $protectedMiddlewares);
     $router->get('/proyectofinalapi/public/api/tickets', [$ticketController, 'index'], $protectedMiddlewares);
     $router->get('/proyectofinalapi/public/api/tickets/{id}', [$ticketController, 'show'], $protectedMiddlewares);
     $router->post('/proyectofinalapi/public/api/tickets', [$ticketController, 'store'], $protectedMiddlewares);

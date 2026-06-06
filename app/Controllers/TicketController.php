@@ -14,6 +14,8 @@ class TicketController
     ) {
     }
 
+
+
     public function index(Request $request): void
     {
         // Los filtros opcionales llegan por query string y se normalizan en el service.
@@ -25,6 +27,27 @@ class TicketController
             'data' => $tickets,
         ]);
     }
+
+    public function showByUser(Request $request): void
+    {
+        $userId = (int) $request->getParam('user_id');
+        $tickets = $this->ticketService->getByUser($userId);
+
+       if ($tickets === false) {
+            Response::json([
+                'success' => false,
+                'message' => 'Tickets no encontrados',
+            ], 404);
+            return;
+        }
+
+        Response::json([
+            'success' => true,
+            'message' => 'Lista de tickets obtenida correctamente',
+            'data' => $tickets,
+        ]);
+    }
+
 
     public function show(Request $request): void
     {

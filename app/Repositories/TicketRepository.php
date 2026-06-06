@@ -12,6 +12,8 @@ class TicketRepository
     {
     }
 
+
+
     public function getAll(array $filters = []): array
     {
         // El SELECT incluye nombres de relaciones para facilitar consumo desde frontend/API.
@@ -38,6 +40,15 @@ class TicketRepository
         $statement = $this->connection->prepare($sql);
         $statement->execute($params);
 
+        return $statement->fetchAll();
+    }
+
+    public function findByUser(int $id): array|false
+    {
+        $statement = $this->connection->prepare($this->baseSelect() . ' WHERE t.created_by = :id');
+        $statement->execute(['id' => $id]);
+
+        // Return all tickets created by the user; empty array if none.
         return $statement->fetchAll();
     }
 

@@ -12,6 +12,7 @@ class TicketService
     {
     }
 
+  
     public function list(array $filters = []): array
     {
         return $this->ticketRepository->getAll($this->normalizeFilters($filters));
@@ -22,17 +23,30 @@ class TicketService
         return $this->ticketRepository->findById($id);
     }
 
+      public function getByUser(int $id): array
+    {
+        return $this->ticketRepository->findByUser($id);
+    }
+
+
     public function create(array $data): array
     {
+        // Verificar existencia de agentes antes de crear el ticket
+        $agents = $this->ticketRepository->getAgentsWithActiveTicketsCount();
+        if (empty($agents)) {
+            // No hay agentes para asignar, abortar creación del ticket
+            $this->ticketRepository->rollBack();
+            throw new RuntimeException('No hay agentes disponibles para asignar el ticket');
+        }
         $this->ticketRepository->beginTransaction();
         try {
             $normalized = $this->normalizeCreateData($data);
             $newTicketId = $this->ticketRepository->create($normalized);
 
             $this->autoAssignTicket(
-                $newTicketId, 
-                $normalized['categoria_ticket_id'], 
-                $normalized['prioridad_ticket_id'], 
+                $newTicketId,
+                $normalized['categoria_ticket_id'],
+                $normalized['prioridad_ticket_id'],
                 $normalized['created_by']
             );
 

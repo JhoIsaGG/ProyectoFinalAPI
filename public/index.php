@@ -30,11 +30,12 @@ spl_autoload_register(function (string $classname) : void {
 $request = new Request();
 $router = new Router();
 
-$databaseConnection = Database::getConnection();
+
 // Repositorios, Servicios, Validadores y Controladores para Usuarios
+$usuarioValidator = new UsuarioValidator();
+$databaseConnection = Database::getConnection();
 $usuarioRepository = new UsuarioRepository($databaseConnection);
 $usuarioService = new UsuarioService($usuarioRepository);
-$usuarioValidator = new UsuarioValidator();
 $usuarioController = new UsuarioController($usuarioService, $usuarioValidator);
 
 // Repositorios, Servicios, Validadores y Controladores para Roles
