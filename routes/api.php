@@ -70,6 +70,7 @@ $router->delete('/proyectofinalapi/public/api/prioridades-ticket/{id}', [$priori
     $router->get('/proyectofinalapi/public/api/historial-tickets', [$historialTicketController, 'index'], $protectedMiddlewares);
 
 // Rutas para Asignaciones de Tickets
+    $router->get('/proyectofinalapi/public/api/asignaciones_user/{user_id}', [$asignacionTicketController, 'showByUser'], $protectedMiddlewares);
     $router->get('/proyectofinalapi/public/api/asignaciones', [$asignacionTicketController, 'index'], $protectedMiddlewares);
     $router->get('/proyectofinalapi/public/api/asignaciones/{id}', [$asignacionTicketController, 'show'], $protectedMiddlewares);
     $router->post('/proyectofinalapi/public/api/asignaciones', [$asignacionTicketController, 'store'], $protectedMiddlewares);

@@ -143,4 +143,24 @@ class AsignacionTicketController
             'message' => 'Asignación eliminada correctamente',
         ]);
     }
+
+    public function showByUser(Request $request): void
+    {
+        $userId = (int) $request->getParam('user_id');
+        $assignments = $this->asignacionTicketService->getByUser($userId);
+
+        if ($assignments === []) {
+            Response::json([
+                'success' => false,
+                'message' => 'Asignaciones no encontradas',
+            ], 404);
+            return;
+        }
+
+        Response::json([
+            'success' => true,
+            'message' => 'Lista de asignaciones obtenida correctamente',
+            'data' => $assignments,
+        ]);
+    }
 }

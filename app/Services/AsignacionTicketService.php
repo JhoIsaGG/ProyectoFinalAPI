@@ -63,6 +63,11 @@ class AsignacionTicketService
         return $this->asignacionTicketRepository->delete($id);
     }
 
+    public function getByUser(int $userId): array
+    {
+        return $this->asignacionTicketRepository->findByAgenteId($userId);
+    }
+
     private function normalizeCreateData(array $data): array
     {
         return [

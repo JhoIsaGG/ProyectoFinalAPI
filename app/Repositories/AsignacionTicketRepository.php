@@ -76,9 +76,18 @@ class AsignacionTicketRepository
         return $statement->execute(['id' => $id]);
     }
 
+    public function findByAgenteId(int $agenteId): array
+    {
+        $sql = $this->baseSelect() . ' WHERE ag.usuario_id = :usuario_id ORDER BY ast.id DESC';
+        $statement = $this->connection->prepare($sql);
+        $statement->execute(['usuario_id' => $agenteId]);
+        return $statement->fetchAll();
+    }
+
     private function baseSelect(): string
     {
         return 'SELECT 
+                    ag.usuario_id AS usuario_id,
                     ast.id,
                     ast.ticket_id,
                     t.titulo AS ticket_titulo,
